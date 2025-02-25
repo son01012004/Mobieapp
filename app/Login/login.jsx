@@ -38,7 +38,7 @@ export default function Login() {
             Alert.alert("Lỗi", "Mật khẩu không được để trống.");
             return;
         }
-        router.push("/Home");
+        router.push("./../../screen/home");
     };
 
     const onGooglePress = useCallback(async () => {
@@ -119,3 +119,4 @@ export default function Login() {
         </View>
     );
 }
+

@@ -1,8 +1,8 @@
-import { ImageBackground, View, Image, TouchableOpacity, Text } from "react-native";
+import { ImageBackground, View, Image, TouchableOpacity, Text, Linking } from "react-native";
 import React from "react";
-import { Link } from "expo-router"; // 🔹 Import Link từ expo-router
+import { Link } from "expo-router"; 
 
-export default function Sign() {
+const  Sign = () => {
   return (
     <ImageBackground
       source={require("../../assets/images/Back1.png")}
@@ -64,3 +64,6 @@ export default function Sign() {
     </ImageBackground>
   );
 }
+
+export default Sign;
+
