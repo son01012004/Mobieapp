@@ -8,20 +8,6 @@ export default function Index() {
     <View>
 <Sign/>
     </View>
-    <View
-    
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Link href={'Login/Sign-in'}>
-     
-        <Text> Gooo to login screen </Text>
-
-     </Link>
-    </View>
     </>
   );
 }

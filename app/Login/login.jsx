@@ -49,7 +49,7 @@ export default function Login() {
             });
     
             if (createdSessionId) {
-                router.push("/Home");
+                router.push("./../../screen/home");
             }
         } catch (err) {
             console.error("Lỗi đăng nhập Google:", err);
