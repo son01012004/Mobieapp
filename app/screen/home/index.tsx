@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, Image, SafeAreaView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Header from '../components/header';
-import Footer from '../components/footer';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Octicons from '@expo/vector-icons/Octicons';
@@ -26,7 +24,7 @@ export default function Home() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <Header />
+ 
 
       {/* Nội dung chính */}
       <View style={{ flex: 1, width: '100%' }}>
@@ -98,7 +96,6 @@ export default function Home() {
 
       </View>
 
-      <Footer />
     </SafeAreaView>
   );
 }
