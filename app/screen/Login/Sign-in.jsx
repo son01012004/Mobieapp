@@ -1,6 +1,8 @@
-import { ImageBackground, View, Image, TouchableOpacity, Text, Linking } from "react-native";
+import { ImageBackground, View, Image, TouchableOpacity, Text, Linking, Dimensions } from "react-native";
 import React from "react";
 import { Link } from "expo-router"; 
+
+const {height} = Dimensions.get('window')
 
 const  Sign = () => {
   return (
@@ -8,7 +10,7 @@ const  Sign = () => {
       source={require("../../../assets/images/Back1.png")}
       style={{
         width: '100%',
-        height: 700,
+        height: height,
         justifyContent: "center",
         alignItems: "center"
       }}
