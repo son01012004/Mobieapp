@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 const  Sign = () => {
   return (
     <ImageBackground
-      source={require("../../assets/images/Back1.png")}
+      source={require("../../../assets/images/Back1.png")}
       style={{
         width: '100%',
         height: 700,
@@ -14,7 +14,7 @@ const  Sign = () => {
       }}
     >
       <Image
-        source={require("../../assets/images/Back2.png")}
+        source={require("../../../assets/images/Back2.png")}
         style={{
           width: 200,
           height: 200,

@@ -43,8 +43,8 @@ export default function RootLayout() {
       tokenCache={tokenCache}
       publishableKey={publishableKey}
     >
-      <Stack>
-        <Stack.Screen name="index" />
+      <Stack options={{ headerShown: false }}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen 
           name="Login/sign-in"
           options={{ headerShown: false }}
