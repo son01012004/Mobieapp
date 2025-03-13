@@ -6,7 +6,7 @@ const QrScreen = () => {
   return (
     <Container isScroll={true}>
       <View>
-        <Text>QrScreen</Text>
+        <Text>QrScreesfsaldfsn</Text>
       </View>
 
     </Container>
