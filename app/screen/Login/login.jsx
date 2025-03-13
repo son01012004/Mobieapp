@@ -38,7 +38,7 @@ export default function Login() {
             Alert.alert("Lỗi", "Mật khẩu không được để trống.");
             return;
         }
-        router.push("./../../screen/home");
+        router.push("./../../screen/Home");
     };
 
     const onGooglePress = useCallback(async () => {
@@ -59,7 +59,7 @@ export default function Login() {
     return (
         <View style={{ flex: 1 }}>
             <ImageBackground
-                source={require("../../assets/images/Back1.png")}
+                source={require("../../../assets/images/Back1.png")}
                 style={{ width: '100%', height: 700, justifyContent: "center", alignItems: "center" }}
             >
                 <Text style={{ fontSize: 28, fontWeight: "bold", color: "#0047AB", marginBottom: 20, position: "absolute", top: 80 }}>
@@ -85,7 +85,7 @@ export default function Login() {
                     />
                     <TouchableOpacity onPress={() => setPasswordVisible(!isPasswordVisible)}>
                         <Image
-                            source={isPasswordVisible ? require("../../assets/images/eye.png") : require("../../assets/images/eye-close.png")}
+                            source={isPasswordVisible ? require("../../../assets/images/eye.png") : require("../../../assets/images/eye-close.png")}
                             style={{ width: 24, height: 24, tintColor: "#666", marginRight: 10 }}
                         />
                     </TouchableOpacity>
@@ -110,10 +110,10 @@ export default function Login() {
 
                 <View style={{ flexDirection: "row", gap: 20 }}>
                     <TouchableOpacity onPress={onGooglePress}>
-                        <Image source={require("../../assets/images/Google.png")} style={{ width: 40, height: 40 }} />
+                        <Image source={require("../../../assets/images/Google.png")} style={{ width: 40, height: 40 }} />
                     </TouchableOpacity>
-                    <Image source={require("../../assets/images/Facebook.png")} style={{ width: 40, height: 40 }} />
-                    <Image source={require("../../assets/images/Apple.png")} style={{ width: 40, height: 40 }} />
+                    <Image source={require("../../../assets/images/Facebook.png")} style={{ width: 40, height: 40 }} />
+                    <Image source={require("../../../assets/images/Apple.png")} style={{ width: 40, height: 40 }} />
                 </View>
             </ImageBackground>
         </View>

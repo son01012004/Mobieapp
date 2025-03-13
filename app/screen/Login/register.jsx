@@ -31,7 +31,7 @@ export default function Register() {
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
-        source={require("../../assets/images/Back1.png")}
+        source={require("../../../assets/images/Back1.png")}
         style={{
           width: "100%",
           height: 700,
@@ -140,15 +140,15 @@ export default function Register() {
 
         <View style={{ flexDirection: "row", gap: 20 }}>
           <Image
-            source={require("../../assets/images/Google.png")}
+            source={require("../../../assets/images/Google.png")}
             style={{ width: 40, height: 40 }}
           />
           <Image
-            source={require("../../assets/images/Facebook.png")}
+            source={require("../../../assets/images/Facebook.png")}
             style={{ width: 40, height: 40 }}
           />
           <Image
-            source={require("../../assets/images/Apple.png")}
+            source={require("../../../assets/images/Apple.png")}
             style={{ width: 40, height: 40 }}
           />
         </View>
