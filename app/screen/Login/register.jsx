@@ -24,7 +24,7 @@ export default function Register() {
 
     // Hiển thị thông báo và điều hướng về trang đăng nhập
     Alert.alert("Thành công", "Đăng ký thành công!", [
-      { text: "OK", onPress: () => router.push("/Login/login") }
+      { text: "OK", onPress: () => router.replace("/screen/Login/login") }
     ]);
   };
 
@@ -128,7 +128,7 @@ export default function Register() {
         </TouchableOpacity>
 
         {/* Đã có tài khoản */}
-        <TouchableOpacity onPress={() => router.push("/Login/login")}>
+        <TouchableOpacity onPress={() => router.replace("/screen/Login/login")}>
           <Text style={{ color: "#666", fontSize: 16, marginBottom: 20 }}>
             Đã có tài khoản
           </Text>

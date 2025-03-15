@@ -1,10 +1,12 @@
-import { ImageBackground, View, Image, TouchableOpacity, Text, Linking, Dimensions } from "react-native";
+import { ImageBackground, View, Image, TouchableOpacity, Text, Dimensions } from "react-native";
 import React from "react";
-import { Link } from "expo-router"; 
+import { useNavigation } from "@react-navigation/native";
+import {Button} from '@bsdaoquang/rncomponent';
+const { height } = Dimensions.get('window');
 
-const {height} = Dimensions.get('window')
+const Sign = () => {
+  const navigation = useNavigation();
 
-const  Sign = () => {
   return (
     <ImageBackground
       source={require("../../../assets/images/Back1.png")}
@@ -12,7 +14,7 @@ const  Sign = () => {
         width: '100%',
         height: height,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
       <Image
@@ -25,47 +27,49 @@ const  Sign = () => {
       />
 
       {/* View chứa hai nút */}
-      <View style={{
-        flexDirection: "row",
-        position: "absolute",
-        bottom: 180,
-        width: "100%",
-        justifyContent: "space-evenly"
-      }}>
+      <View
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 180,
+          width: "100%",
+          justifyContent: "space-evenly",
+        }}
+      >
         {/* Nút Đăng nhập */}
-        <Link href="/Login/login" asChild>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#0047AB",
-              paddingVertical: 30,
-              paddingHorizontal: 30,
-              borderRadius: 10
-            }}
-          >
-            <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Đăng nhập</Text>
-          </TouchableOpacity>
-        </Link>
- 
-        {/* Nút Đăng ký */}
-        <Link href="/Login/register" asChild>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",  // Nền trắng
-              paddingVertical: 30,
-              paddingHorizontal: 30,
-              borderRadius: 10,
-              borderWidth: 2,
-              borderColor: "white"
-            }}
-          >
-            <Text style={{ color: "#0047AB", fontWeight: "bold", fontSize: 16 }}>Đăng ký</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")} 
+          style={{
+            backgroundColor: "#0047AB",
+            paddingVertical: 30,
+            paddingHorizontal: 30,
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
+            Đăng nhập
+          </Text>
+        </TouchableOpacity>
 
+        {/* Nút Đăng ký */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Register")}
+          style={{
+            backgroundColor: "white",
+            paddingVertical: 30,
+            paddingHorizontal: 30,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: "white",
+          }}
+        >
+          <Text style={{ color: "#0047AB", fontWeight: "bold", fontSize: 16 }}>
+            Đăng ký
+          </Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
-}
+};
 
 export default Sign;
-

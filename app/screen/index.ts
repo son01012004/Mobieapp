@@ -3,11 +3,17 @@ import ProfileScreen from './profiles/ProfileScreen';
 import QrScreen from './qrCode/QrScreen';
 import TransciptScreen from './transcript/TransciptScreen';
 import scheduleScreen from './scheduleScreen/ScheduleScreen';
+import Login from './Login/login';
+import Register from './Login/register';
+import Sign from './Login/Sign-in';
 
 export {
   HomeScreen,
   ProfileScreen,
   QrScreen,
   TransciptScreen,
-  scheduleScreen
+  scheduleScreen,
+  Sign,
+  Login,
+  Register,
 }

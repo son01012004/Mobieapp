@@ -38,7 +38,7 @@ export default function Login() {
             Alert.alert("Lỗi", "Mật khẩu không được để trống.");
             return;
         }
-        router.push("./../../screen/Home");
+        router.push("/src/routers/TabNavigator");
     };
 
     const onGooglePress = useCallback(async () => {
@@ -49,7 +49,7 @@ export default function Login() {
             });
     
             if (createdSessionId) {
-                router.push("./../../screen/home");
+                router.push("/src/routers/TabNavigator");
             }
         } catch (err) {
             console.error("Lỗi đăng nhập Google:", err);
@@ -102,7 +102,7 @@ export default function Login() {
                     <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>Đăng nhập</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => router.push("/Login/register")}> 
+                <TouchableOpacity onPress={() => router.push("/screen/Login/register")}> 
                     <Text style={{ color: "#666", fontSize: 16, marginBottom: 20 }}>Tạo tài khoản mới</Text>
                 </TouchableOpacity>
 

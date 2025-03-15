@@ -1,16 +1,16 @@
 
 import React from 'react';
-import { View, Text, Image, SafeAreaView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, SafeAreaView, Dimensions, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import Container from '../../src/components/Container';
 import TextComponent from '../../src/components/TextComponet';
-
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import {colors} from '../../src/constants/colors'
-
+import Swiper from 'react-native-swiper';
+import { StyleSheet } from 'react-native';
 
 const menuItems = [
   { id: '1', title: 'Thông báo', icon: <Ionicons name="notifications-outline" size={25} color="white" />, screen: 'Notifications' },
@@ -23,9 +23,6 @@ const menuItems = [
 const HomeScreen = () => {
   return (
     <Container isScroll={true}>
-
-<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-
 {/* Header */}
 <View
   style={{
@@ -92,11 +89,75 @@ const HomeScreen = () => {
     )}
   />
 </View>
-
-
-      </SafeAreaView>
+<View style={styles.sliderContainer}>
+        <Swiper
+          autoplay
+          showsPagination
+          dotStyle={styles.dotStyle}
+          activeDotStyle={styles.activeDotStyle}
+        >
+          <View style={styles.slide}>
+            <Image
+              source={require("../../../assets/images/Sliders/slide1.png")}
+              style={styles.slideImage}
+            />
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require("../../../assets/images/Sliders/slide2.png")}
+              style={styles.slideImage}
+            />
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require("../../../assets/images/Sliders/slide3.png")}
+              style={styles.slideImage}
+            />
+          </View>
+          {/* Thêm các slide khác nếu cần */}
+        </Swiper>
+      </View>
+      
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  sliderContainer: {
+    height: 200,
+    marginTop: 20,
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slideImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  dotStyle: {
+    backgroundColor: '#ccc',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 3,
+  },
+  activeDotStyle: {
+    backgroundColor: colors.Pastel_Purple, // Hoặc sử dụng màu bạn muốn
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 3,
+  },
+});
 
 export default HomeScreen;
