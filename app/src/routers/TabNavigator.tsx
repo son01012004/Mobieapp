@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View } from 'react-native';
-import { HomeScreen, ProfileScreen, QrScreen, TransciptScreen } from '@/app/screen';
+import { FrameworkProgramScreen, HomeScreen, ProfileScreen, QrScreen, TransciptScreen } from '@/app/screen';
 import ScheduleScreen from '@/app/screen/scheduleScreen/ScheduleScreen';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProfileNavigator from './ProfileNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,7 +91,9 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen name="TranscriptScreenTab" component={TransciptScreen} />
-      <Tab.Screen name="ProfileScreenTab" component={ProfileScreen} />
+      <Tab.Screen name="ProfileScreenTab" component={ProfileNavigator} />
+
+
     </Tab.Navigator>
   );
 };

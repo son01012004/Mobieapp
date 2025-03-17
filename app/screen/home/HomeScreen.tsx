@@ -10,7 +10,7 @@ const HomeScreen = () => {
 
       {/* Danh sách các phần nội dung */}
       {Array.from({ length: 10 }).map((_, index) => (
-        <Section key={`item${index}`} style={{ marginBottom: 10 }}>
+        <Section key={`item${index}`} styles={{ marginBottom: 10 }}>
           <TextComponent text="Phần 2: Khởi tạo dự án React Native với Typescript | Fullstack React Native Ecommerce
           Trong series bạn sẽ học được:
           - Xây dựng ứng dụng React Native typescript từ những bước đầu tiên.
