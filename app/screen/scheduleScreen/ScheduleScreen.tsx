@@ -1,11 +1,63 @@
-import { Container } from '@/app/src/components';
+import { Container, CardComponent } from '@/app/src/components';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import WeeklySchedule from './WeeklySchedule';
+import { colors, ColorType } from '@/app/src/constants/colors';
+
+// Define the Lesson interface with strict type
+interface Lesson {
+  time: string;
+  subject: string;
+  studentId: string;
+  teacher?: string; // Optional to match your data structure
+  room: string;
+  type: 'study' | 'exam' | 'practice'; // Strict union type
+}
 
 const ScheduleScreen = () => {
   const [checked, setChecked] = useState('day');
+
+  // Define daily lesson data with strict typing
+  const dailyLessons: Lesson[] = [
+    {
+      time: "Tiết 1 ➝ 3",
+      subject: "Học máy cơ bản",
+      studentId: "D17CNPM4-101002005",
+      teacher: "Giáo viên: Nguyễn Thị Thanh Tân",
+      room: "Phòng A306",
+      type: 'study' as const,
+    },
+    {
+      time: "Tiết 4 ➝ 5",
+      subject: "Học máy cơ bản",
+      studentId: "D17CNPM4-101002005",
+      room: "Phòng A306",
+      type: 'exam' as const,
+    },
+    {
+      time: "Tiết 1 ➝ 5",
+      subject: "Học máy cơ bản",
+      studentId: "D17CNPM4-101002005",
+      teacher: "Giáo viên: Nguyễn Thị Thanh Tân",
+      room: "Phòng A105",
+      type: 'practice' as const,
+    },
+  ];
+
+  // Function to determine background color based on lesson type
+  const getBackgroundColor = (type: 'study' | 'exam' | 'practice'): ColorType => {
+    switch (type) {
+      case 'study':
+        return 'Light_Sky_Blue'; // Return the color name, not the hex value
+      case 'exam':
+        return 'Pastel_Gold';
+      case 'practice':
+        return 'Pastel_Purple';
+      default:
+        return 'Light_Sky_Blue'; // Fallback with defined color name
+    }
+  };
 
   return (
     <Container isScroll={true}>
@@ -31,41 +83,32 @@ const ScheduleScreen = () => {
         {checked === 'day' ? (
           <>
             {/* Danh sách tiết học */}
-            <View style={[styles.card, { backgroundColor: '#A7DAF8' }]}>
-              <Text style={styles.lessonTitle}>Tiết 1 ➝ 3</Text>
-              <Text style={styles.lessonText}>Học máy cơ bản</Text>
-              <Text style={styles.lessonText}>D17CNPM4-101002005</Text>
-              <Text style={styles.lessonText}>Giáo viên: Nguyễn Thị Thanh Tân</Text>
-              <Text style={styles.lessonText}>Phòng A306</Text>
-            </View>
-
-            <View style={[styles.card, { backgroundColor: '#FAD79E' }]}>
-              <Text style={styles.lessonTitle}>Tiết 4 ➝ 5</Text>
-              <Text style={styles.lessonText}>Học máy cơ bản</Text>
-              <Text style={styles.lessonText}>D17CNPM4-101002005</Text>
-              <Text style={styles.lessonText}>Phòng A306</Text>
-            </View>
-
-            <View style={[styles.card, { backgroundColor: '#D5B4F3' }]}>
-              <Text style={styles.lessonTitle}>Tiết 1 ➝ 5</Text>
-              <Text style={styles.lessonText}>Học máy cơ bản</Text>
-              <Text style={styles.lessonText}>D17CNPM4-101002005</Text>
-              <Text style={styles.lessonText}>Giáo viên: Nguyễn Thị Thanh Tân</Text>
-              <Text style={styles.lessonText}>Phòng A105</Text>
-            </View>
+            {dailyLessons.map((lesson, index) => (
+              <CardComponent
+                key={index}
+                title={lesson.time}
+                description={[
+                  { text: lesson.subject, icon: '📚' },
+                  { text: lesson.studentId, icon: '📝' },
+                  { text: lesson.teacher || '', icon: '👩‍🏫' }, // Handle optional teacher
+                  { text: lesson.room, icon: '🏫' },
+                ]}
+                backgroundColor={getBackgroundColor(lesson.type)}
+              />
+            ))}
 
             {/* Chú thích */}
             <View style={styles.legendContainer}>
               <View style={styles.legendItem}>
-                <View style={[styles.legendColor, { backgroundColor: '#A7DAF8' }]} />
+                <View style={[styles.legendColor, { backgroundColor: colors.Light_Sky_Blue }]} />
                 <Text style={styles.legendText}>Lịch học</Text>
               </View>
               <View style={styles.legendItem}>
-                <View style={[styles.legendColor, { backgroundColor: '#FAD79E' }]} />
+                <View style={[styles.legendColor, { backgroundColor: colors.Pastel_Gold }]} />
                 <Text style={styles.legendText}>Lịch thi</Text>
               </View>
               <View style={styles.legendItem}>
-                <View style={[styles.legendColor, { backgroundColor: '#D5B4F3' }]} />
+                <View style={[styles.legendColor, { backgroundColor: colors.Pastel_Purple }]} />
                 <Text style={styles.legendText}>Lịch thực hành</Text>
               </View>
             </View>
@@ -103,19 +146,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioText: {
-    fontSize: 14,
-    color: 'black',
-  },
-  card: {
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-  },
-  lessonTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  lessonText: {
     fontSize: 14,
     color: 'black',
   },

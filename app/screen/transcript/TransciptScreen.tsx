@@ -1,12 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Container } from '@/app/src/components';
+import TableComponent from '../../src/components/TableComponent'; // Adjust the path as needed
+import { sizes } from '../../src/constants/sizes';
 
+// Define the shape of each table row entry
 interface TranscriptEntry {
   subject: string;
   semesterGrade: string;
   finalGrade: string;
   gpa: string;
+}
+
+// Define the shape of each table cell data (matches TableComponent)
+interface TableCellData {
+  key: string;
+  value: string | number;
+}
+
+// Define the shape of a column configuration (matches TableComponent)
+interface TableColumn {
+  key: string;
+  header: string;
+  flex?: number;
+  align?: 'left' | 'center' | 'right';
+  color?: 'Dark' | 'Azure_Radiance' | 'Light_Sky_Blue' | 'Soft_Blue' | 'Pastel_Gold' | 'Pastel_Purple' | 'Black' | 'White';
+  size?: number;
 }
 
 const transcriptData: TranscriptEntry[] = [
@@ -42,6 +61,22 @@ const transcriptData: TranscriptEntry[] = [
   },
 ];
 
+// Transform transcriptData into the format expected by TableComponent
+const tableData: TableCellData[][] = transcriptData.map((entry) => [
+  { key: 'subject', value: entry.subject },
+  { key: 'semesterGrade', value: entry.semesterGrade },
+  { key: 'finalGrade', value: entry.finalGrade },
+  { key: 'gpa', value: entry.gpa },
+]);
+
+// Define columns configuration
+const columns: TableColumn[] = [
+  { key: 'subject', header: 'Tên môn', flex: 3, align: 'left' },
+  { key: 'semesterGrade', header: 'Điểm trung kỳ', flex: 1, align: 'center' },
+  { key: 'finalGrade', header: 'Điểm cuối kỳ', flex: 1, align: 'center' },
+  { key: 'gpa', header: 'Điểm GPA', flex: 1, align: 'center' },
+];
+
 const TranscriptScreen = () => {
   return (
     <Container isScroll={true}>
@@ -49,23 +84,17 @@ const TranscriptScreen = () => {
         <Text style={styles.title}>Kết quả học tập</Text>
         <Text style={styles.subtitle}>HK2(2024-2025)</Text>
 
-        {/* Table Header */}
-        <View style={styles.tableHeader}>
-          <Text style={[styles.headerCell, styles.subjectHeader]}>Tên môn</Text>
-          <Text style={[styles.headerCell, styles.gradeHeader]}>Điểm trung kỳ</Text>
-          <Text style={[styles.headerCell, styles.gradeHeader]}>Điểm cuối kỳ</Text>
-          <Text style={[styles.headerCell, styles.gpaHeader]}>Điểm GPA</Text>
-        </View>
-
-        {/* Table Rows */}
-        {transcriptData.map((entry, index) => (
-          <View key={index} style={styles.tableRow}>
-            <Text style={[styles.cell, styles.subjectCell]}>{entry.subject}</Text>
-            <Text style={[styles.cell, styles.gradeCell]}>{entry.semesterGrade}</Text>
-            <Text style={[styles.cell, styles.gradeCell]}>{entry.finalGrade}</Text>
-            <Text style={[styles.cell, styles.gpaCell]}>{entry.gpa}</Text>
-          </View>
-        ))}
+        {/* Use the TableComponent */}
+        <TableComponent
+          data={tableData}
+          columns={columns}
+          headerColor="Black"
+          headerSize={sizes.title = 15}
+          rowColor="Black"
+          rowSize={sizes.text}
+          borderColor="Black"
+          backgroundColor="White"
+        />
       </View>
     </Container>
   );
@@ -89,53 +118,5 @@ const styles = StyleSheet.create({
     color: '#4A90E2',
     textAlign: 'center',
     marginBottom: 10,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#E6F0FA',
-    borderBottomWidth: 1,
-    borderBottomColor: '#D3D3D3',
-    paddingVertical: 10,
-  },
-  headerCell: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#4A90E2',
-  },
-  subjectHeader: {
-    flex: 3,
-    textAlign: 'left',
-    paddingLeft: 10,
-  },
-  gradeHeader: {
-    flex: 1,
-  },
-  gpaHeader: {
-    flex: 1,
-  },
-  tableRow: {
-    flexDirection: 'row',
-    backgroundColor: '#F0F8FF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#D3D3D3',
-    paddingVertical: 10,
-    marginBottom: 5,
-  },
-  cell: {
-    fontSize: 14,
-    color: '#000',
-    textAlign: 'center',
-  },
-  subjectCell: {
-    flex: 3,
-    textAlign: 'left',
-    paddingLeft: 10,
-  },
-  gradeCell: {
-    flex: 1,
-  },
-  gpaCell: {
-    flex: 1,
   },
 });

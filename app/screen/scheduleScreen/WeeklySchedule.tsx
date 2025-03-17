@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PrintIcon from 'react-native-vector-icons/MaterialIcons';
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from 'react-native-modal';
+import CardComponent from '../../src/components/CardComponent';
+import { colors, ColorType } from '../../src/constants/colors'; // Import colors
 
 const labels = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6"] as const;
 
@@ -13,7 +15,7 @@ interface Lesson {
   teacher: string;
   room: string;
   color: string;
-  type: 'study' | 'exam';
+  type: 'study' | 'exam' | 'practice'; // Added 'practice' type
 }
 
 interface DaySchedule {
@@ -32,7 +34,7 @@ const scheduleData: DaySchedule[] = [
   {
     day: "Thứ 3",
     lessons: [
-      { time: "Tiết 1 ➝ 5", subject: "Kỹ thuật lập trình", teacher: "Nguyễn Văn Nam", room: "C103", color: "#DAB6FC", type: "study" }
+      { time: "Tiết 1 ➝ 5", subject: "Kỹ thuật lập trình", teacher: "Nguyễn Văn Nam", room: "C103", color: "#DAB6FC", type: "practice" } // Changed to 'practice'
     ]
   },
   {
@@ -53,7 +55,7 @@ const scheduleData: DaySchedule[] = [
 
 const WeeklySchedule: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [viewMode, setViewMode] = useState<'all' | 'study' | 'exam'>('all');
+  const [viewMode, setViewMode] = useState<'all' | 'study' | 'exam' | 'practice'>('all'); // Added 'practice' to viewMode
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   const handlePreviousWeek = () => {
@@ -103,7 +105,21 @@ const WeeklySchedule: React.FC = () => {
     }))
     .filter(day => day.lessons.length > 0);
 
-  const screenWidth = Dimensions.get('window').width ;
+  const screenWidth = Dimensions.get('window').width;
+
+  // Function to determine background color based on lesson type
+  const getBackgroundColor = (type: 'study' | 'exam' | 'practice'): ColorType => {
+    switch (type) {
+      case 'study':
+        return 'Light_Sky_Blue';
+      case 'exam':
+        return 'Pastel_Gold';
+      case 'practice':
+        return 'Pastel_Purple';
+      default:
+        return 'Light_Sky_Blue'; // Fallback
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -131,6 +147,13 @@ const WeeklySchedule: React.FC = () => {
           >
             <View style={[styles.toggleCircle, viewMode === 'exam' && styles.toggleCircleSelected]} />
             <Text style={styles.toggleText}>Lịch thi</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={() => setViewMode('practice')}
+          >
+            <View style={[styles.toggleCircle, viewMode === 'practice' && styles.toggleCircleSelected]} />
+            <Text style={styles.toggleText}>Lịch thực hành</Text>
           </TouchableOpacity>
         </View>
 
@@ -175,8 +198,8 @@ const WeeklySchedule: React.FC = () => {
             minDate={new Date(2023, 0, 1)}
             maxDate={new Date(2026, 11, 31)}
             initialDate={selectedDate}
-            startFromMonday={true} // Start the week from Monday
-            weekdays={['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']} // Correct weekday order
+            startFromMonday={true}
+            weekdays={['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']}
             months={[
               'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
               'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
@@ -186,7 +209,7 @@ const WeeklySchedule: React.FC = () => {
             textStyle={{ fontSize: 14, color: '#4A90E2' }}
             selectedDayStyle={{ borderRadius: 15 }}
             todayTextStyle={{ fontWeight: 'bold' }}
-            showDayStragglers={true} // Show days from previous/next month
+            showDayStragglers={true}
           />
         </View>
       </Modal>
@@ -213,12 +236,16 @@ const WeeklySchedule: React.FC = () => {
                   <Text style={styles.dayTitle}>{day}</Text>
                   <View style={styles.lessonContainer}>
                     {filteredLessons.map((lesson, lessonIndex) => (
-                      <View key={lessonIndex} style={[styles.card, { backgroundColor: lesson.color }]}>
-                        <Text style={styles.lessonTitle}>{lesson.time}</Text>
-                        <Text style={styles.lessonText}>📚 {lesson.subject}</Text>
-                        <Text style={styles.lessonText}>👨‍🏫 {lesson.teacher}</Text>
-                        <Text style={styles.lessonText}>🏫 {lesson.room}</Text>
-                      </View>
+                      <CardComponent
+                        key={lessonIndex}
+                        title={lesson.time}
+                        description={[
+                          { text: lesson.subject, icon: '📚' },
+                          { text: lesson.teacher, icon: '👨‍🏫' },
+                          { text: lesson.room, icon: '🏫' },
+                        ]}
+                        backgroundColor={getBackgroundColor(lesson.type)}
+                      />
                     ))}
                   </View>
                 </View>
@@ -228,17 +255,18 @@ const WeeklySchedule: React.FC = () => {
           return null;
         })}
 
+        {/* Chú thích */}
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: '#A7DAF8' }]} />
+            <View style={[styles.legendColor, { backgroundColor: colors.Light_Sky_Blue }]} />
             <Text style={styles.legendText}>Lịch học</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: '#FAD79E' }]} />
+            <View style={[styles.legendColor, { backgroundColor: colors.Pastel_Gold }]} />
             <Text style={styles.legendText}>Lịch thi</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: '#D5B4F3' }]} />
+            <View style={[styles.legendColor, { backgroundColor: colors.Pastel_Purple }]} />
             <Text style={styles.legendText}>Lịch thực hành</Text>
           </View>
         </View>
@@ -375,20 +403,6 @@ const styles = StyleSheet.create({
   lessonContainer: {
     flexDirection: 'column',
     flex: 1,
-  },
-  card: {
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 5,
-    width: '100%',
-  },
-  lessonTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  lessonText: {
-    fontSize: 14,
-    color: 'black',
   },
   legendContainer: {
     flexDirection: 'row',

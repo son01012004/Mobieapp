@@ -1,14 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; // Cần cài đặt thư viện này
-import { Ionicons } from '@expo/vector-icons'; // Hoặc react-native-vector-icons
+import { Picker } from '@react-native-picker/picker';
+import { Ionicons } from '@expo/vector-icons';
+import TableComponent from '../../src/components/TableComponent'; // Adjust the path as needed
+import { colors, ColorType } from '../../src/constants/colors';
+import { sizes } from '../../src/constants/sizes';
+
+// Define the shape of each course entry
+interface CourseEntry {
+  stt: number;
+  maLopHP: string;
+  tenMonHoc: string;
+  lopHoc: string;
+  tc: number;
+  nhomTH: string;
+  hanNop: string;
+  thu: string;
+  trangThaiDK: string;
+}
+
+// Define the shape of each table cell data (matches TableComponent)
+interface TableCellData {
+  key: string;
+  value: string | number;
+}
+
+// Define the shape of a column configuration (matches TableComponent)
+interface TableColumn {
+  key: string;
+  header: string;
+  flex?: number;
+  align?: 'left' | 'center' | 'right';
+  color?: ColorType;
+  size?: number;
+}
 
 const RegisterForCoursesScreen = () => {
   // State cho bộ lọc HK
-  const [selectedHK, setSelectedHK] = useState<string>('HK2 (2024-2025)'); // Định nghĩa kiểu cho selectedHK
+  const [selectedHK, setSelectedHK] = useState<string>('HK2 (2024-2025)');
 
   // Dữ liệu mẫu cho bảng
-  const coursesData = [
+  const coursesData: CourseEntry[] = [
     {
       stt: 1,
       maLopHP: '010100475005',
@@ -99,22 +131,49 @@ const RegisterForCoursesScreen = () => {
     },
   ];
 
+  // Transform coursesData into the format expected by TableComponent
+  const tableData: TableCellData[][] = coursesData.map((course) => [
+    { key: 'stt', value: course.stt },
+    { key: 'tenMonHoc', value: course.tenMonHoc },
+    { key: 'lopHoc', value: course.lopHoc },
+    { key: 'tc', value: course.tc },
+    { key: 'nhomTH', value: course.nhomTH },
+    { key: 'trangThaiDK', value: course.trangThaiDK },
+    { key: 'ttLop', value: course.trangThaiDK },
+  ]);
+
+  // Define columns configuration
+  const columns: TableColumn[] = [
+    { key: 'stt', header: 'STT', flex: 0.5, align: 'center' },
+    { key: 'tenMonHoc', header: 'Tên môn học/HP', flex: 2, align: 'left' },
+    { key: 'lopHoc', header: 'Lớp học', flex: 1, align: 'center' },
+    { key: 'tc', header: 'TC', flex: 0.5, align: 'center' },
+    { key: 'nhomTH', header: 'Nhóm TH', flex: 1, align: 'center' },
+    { key: 'trangThaiDK', header: 'Trạng thái ĐK', flex: 1, align: 'center' },
+    { key: 'ttLop', header: 'TT Lop', flex: 1, align: 'center' },
+  ];
+
   return (
     <ScrollView style={styles.container}>
-      {/* Tiêu đề */}
+      {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.title}>Đăng ký học phần</Text>
+        <Image
+          source={{ uri: 'https://via.placeholder.com/150' }} // Replace with your logo URL
+          style={styles.logo}
+        />
       </View>
 
-      {/* Bộ lọc */}
-      <View style={styles.filterContainer}>
-        <View style={styles.pickerContainer}>
-          <Text style={styles.label}>HK</Text>
+      {/* Filter Section */}
+      <View style={styles.filterSection}>
+        <View style={styles.filterRow}>
+          <Text style={styles.filterLabel}>Học kỳ:</Text>
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={selectedHK}
-              onValueChange={(itemValue: string) => setSelectedHK(itemValue)} // Định nghĩa kiểu cho itemValue
+              onValueChange={(itemValue: string) => setSelectedHK(itemValue)}
               style={styles.picker}
+              dropdownIconColor={colors.Dark}
             >
               <Picker.Item label="HK2 (2024-2025)" value="HK2 (2024-2025)" />
               <Picker.Item label="HK1 (2023-2024)" value="HK1 (2023-2024)" />
@@ -123,60 +182,53 @@ const RegisterForCoursesScreen = () => {
         </View>
         <View style={styles.filterButtons}>
           <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="school" size={16} color={colors.White} />
             <Text style={styles.filterButtonText}>Học mới</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="refresh" size={16} color={colors.White} />
             <Text style={styles.filterButtonText}>Học lại</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="star" size={16} color={colors.White} />
             <Text style={styles.filterButtonText}>Học cải thiện</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Bảng dữ liệu */}
-      <View style={styles.table}>
-        <View style={styles.tableHeader}>
-          <Text style={styles.headerCell}>STT</Text>
-          <Text style={styles.headerCell}>Mã lớp HP</Text>
-          <Text style={styles.headerCell}>Tên môn học/HP</Text>
-          <Text style={styles.headerCell}>Lớp học cụ thể</Text>
-          <Text style={styles.headerCell}>TC</Text>
-          <Text style={styles.headerCell}>Nhóm TH</Text>
-          <Text style={styles.headerCell}>Học phí</Text>
-          <Text style={styles.headerCell}>Hạn nộp</Text>
-          <Text style={styles.headerCell}>Thu</Text>
-          <Text style={styles.headerCell}>Trạng thái ĐK</Text>
-          <Text style={styles.headerCell}>Ngày ĐK</Text>
-          <Text style={styles.headerCell}>TT lớp HP</Text>
-        </View>
-        {coursesData.map((course, index) => (
-          <View key={index} style={styles.tableRow}>
-            <Text style={styles.cell}>{course.stt}</Text>
-            <Text style={styles.cell}>{course.maLopHP}</Text>
-            <Text style={styles.cell}>{course.tenMonHoc}</Text>
-            <Text style={styles.cell}>{course.lopHoc}</Text>
-            <Text style={styles.cell}>{course.tc}</Text>
-            <Text style={styles.cell}>{course.nhomTH}</Text>
-            <Text style={styles.cell}>{course.hanNop}</Text>
-            <Text style={styles.cell}>{course.thu}</Text>
-            <Text style={styles.cell}>{course.trangThaiDK}</Text>
-            {/* <Text style={styles.cell}>{course.ngayDK}</Text> */}
-            <Text style={styles.cell}>Đã khóa</Text>
-          </View>
-        ))}
+      {/* Table Section */}
+      <View style={styles.tableSection}>
+        <TableComponent
+          data={tableData}
+          columns={columns}
+          headerColor="Azure_Radiance"
+          headerSize={sizes.title}
+          rowColor="Black"
+          rowSize={sizes.text}
+          borderColor="Light_Sky_Blue"
+          backgroundColor="White"
+        />
       </View>
 
-      {/* Nút Lưu */}
-      <TouchableOpacity style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Lưu HP đã đăng ký trong học kỳ này</Text>
+      {/* Save Button */}
+      <TouchableOpacity style={styles.saveButton} onPress={() => alert('Đã lưu đăng ký')}>
+        <Text style={styles.saveButtonText}>Lưu học phần đã đăng ký</Text>
       </TouchableOpacity>
 
-      {/* Sidebar (nếu cần) */}
+      {/* Sidebar Section */}
       <View style={styles.sidebar}>
-        <Text style={styles.sidebarText}>1. Môn học đã chọn</Text>
-        <Text style={styles.sidebarText}>2. Lớp học đã chọn</Text>
-        <Text style={styles.sidebarText}>3. Đã đăng ký</Text>
+        <View style={styles.sidebarItem}>
+          <Ionicons name="checkmark-circle" size={18} color={colors.Azure_Radiance} />
+          <Text style={styles.sidebarText}>Môn học đã chọn: 0</Text>
+        </View>
+        <View style={styles.sidebarItem}>
+          <Ionicons name="people" size={18} color={colors.Azure_Radiance} />
+          <Text style={styles.sidebarText}>Lớp học đã chọn: 0</Text>
+        </View>
+        <View style={styles.sidebarItem}>
+          <Ionicons name="save" size={18} color={colors.Azure_Radiance} />
+          <Text style={styles.sidebarText}>Đã đăng ký: 0</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -185,107 +237,107 @@ const RegisterForCoursesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 10,
+    backgroundColor: '#F9FBFD',
+    padding: 15,
   },
   header: {
-    backgroundColor: '#d3d3d3',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#4A90E2',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+    elevation: 2,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#FFFFFF',
   },
-  filterContainer: {
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    padding: 10,
+  logo: {
+    width: 40,
+    height: 40,
     borderRadius: 5,
-    marginBottom: 10,
   },
-  pickerContainer: {
+  filterSection: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+    elevation: 2,
+  },
+  filterRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
   },
-  label: {
+  filterLabel: {
     fontSize: 16,
+    color: '#333333',
     marginRight: 10,
   },
   pickerWrapper: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: '#D3D3D3',
+    borderRadius: 8,
+    backgroundColor: '#F5F7FA',
   },
   picker: {
-    height: 40,
-    width: '100%',
+    height: 50,
+    color: '#4A90E2',
   },
   filterButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   filterButton: {
-    backgroundColor: '#ddd',
-    padding: 5,
-    borderRadius: 5,
     flex: 1,
+    backgroundColor: '#4A90E2',
+    padding: 10,
+    borderRadius: 8,
     marginHorizontal: 5,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   filterButtonText: {
+    color: '#FFFFFF',
     fontSize: 14,
+    marginLeft: 5,
   },
-  table: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#6B46C1',
-    padding: 10,
-  },
-  headerCell: {
-    flex: 1,
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  tableRow: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  cell: {
-    flex: 1,
-    textAlign: 'center',
+  tableSection: {
+    marginBottom: 15,
   },
   saveButton: {
-    backgroundColor: '#2ecc71',
+    backgroundColor: '#28A745',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
+    elevation: 2,
   },
   saveButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   sidebar: {
-    backgroundColor: '#d3d3d3',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    elevation: 2,
+  },
+  sidebarItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
   },
   sidebarText: {
     fontSize: 14,
-    marginVertical: 5,
+    color: '#333333',
+    marginLeft: 10,
   },
 });
 

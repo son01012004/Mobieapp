@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer'
 import HomeNavigator from './HomeNavigator'
 import DrawerCustom from '../components/DrawerCustom'
 import TabNavigator from './TabNavigator'
+import RegisterForCoursesNavigator from './RegisterForCoursesNavigator'
 const DrawerNavigator = () => {
     const Drawer = createDrawerNavigator()
   return (
@@ -15,7 +16,9 @@ const DrawerNavigator = () => {
         <Drawer.Screen name = 'DrawerMenu' component={TabNavigator}>
 
         </Drawer.Screen>
+        <Drawer.Screen name = 'RegisterForCoursesNavigator' component={RegisterForCoursesNavigator}>
 
+</Drawer.Screen>
         
         
 

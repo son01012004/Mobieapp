@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { DrawerContentComponentProps, DrawerNavigationProp } from '@react-navigation/drawer'; // Import DrawerContentComponentProps
+import { DrawerContentComponentProps, DrawerNavigationProp } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants/colors';
 
 // Định nghĩa kiểu cho các route trong DrawerNavigator
 type DrawerParamList = {
   DrawerMenu: undefined;
+  RegisterForCoursesNavigator: undefined;
 };
 
 // Định nghĩa kiểu cho các route trong TabNavigator
@@ -21,23 +22,22 @@ type TabParamList = {
 // Định nghĩa kiểu cho các route trong MainNavigator
 type RootStackParamList = {
   MainScreen: undefined;
-  FrameworkProgram: undefined;
 };
 
 // Kiểu cho navigation trong DrawerNavigator
 type NavigationProp = DrawerNavigationProp<DrawerParamList, 'DrawerMenu'>;
 
-// Sử dụng DrawerContentComponentProps thay vì định nghĩa thủ công
+// Sử dụng DrawerContentComponentProps
 const DrawerCustom = (props: DrawerContentComponentProps) => {
-  const { navigation, state } = props; // Lấy navigation và state từ props
+  const { navigation, state } = props;
 
   // Hàm để điều hướng đến các tab trong TabNavigator
   const navigateToTab = (tabName: keyof TabParamList) => {
     navigation.navigate('DrawerMenu', { screen: tabName });
   };
 
-  // Hàm để điều hướng đến các màn hình trong MainNavigator
-  const navigateToStack = (screenName: keyof RootStackParamList) => {
+  // Hàm để điều hướng đến các màn hình trong DrawerNavigator
+  const navigateToDrawerScreen = (screenName: keyof DrawerParamList) => {
     navigation.navigate(screenName);
   };
 
@@ -81,7 +81,7 @@ const DrawerCustom = (props: DrawerContentComponentProps) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToStack('FrameworkProgram')}
+          onPress={() => navigateToTab('ProfileScreenTab')}
         >
           <Ionicons name="grid" size={24} color="#000" />
           <Text style={styles.menuText}>Chương trình khung</Text>
@@ -89,7 +89,7 @@ const DrawerCustom = (props: DrawerContentComponentProps) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToTab('HomeScreenTab')} // Cần thêm route
+          onPress={() => navigateToDrawerScreen('RegisterForCoursesNavigator')}
         >
           <Ionicons name="create" size={24} color="#000" />
           <Text style={styles.menuText}>Đăng ký học phần</Text>
@@ -97,7 +97,7 @@ const DrawerCustom = (props: DrawerContentComponentProps) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToTab('HomeScreenTab')} // Cần thêm route
+          onPress={() => navigateToTab('HomeScreenTab')}
         >
           <Ionicons name="cash" size={24} color="#000" />
           <Text style={styles.menuText}>Tham khảo học phí</Text>
@@ -105,7 +105,7 @@ const DrawerCustom = (props: DrawerContentComponentProps) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToTab('HomeScreenTab')} // Cần thêm route
+          onPress={() => navigateToTab('HomeScreenTab')}
         >
           <Ionicons name="people" size={24} color="#000" />
           <Text style={styles.menuText}>Refer a Friend</Text>
@@ -113,7 +113,7 @@ const DrawerCustom = (props: DrawerContentComponentProps) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToTab('HomeScreenTab')} // Cần thêm route
+          onPress={() => navigateToTab('HomeScreenTab')}
         >
           <Ionicons name="help" size={24} color="#000" />
           <Text style={styles.menuText}>Support</Text>
