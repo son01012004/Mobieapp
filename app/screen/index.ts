@@ -6,6 +6,7 @@ import scheduleScreen from './scheduleScreen/ScheduleScreen';
 import Login from './Login/login';
 import Register from './Login/register';
 import Sign from './Login/Sign-in';
+import NotificationScreen from './Notification/NotificationScreen'
 
 export {
   HomeScreen,
@@ -16,4 +17,5 @@ export {
   Sign,
   Login,
   Register,
+  NotificationScreen,
 }

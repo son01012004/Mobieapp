@@ -11,6 +11,8 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import {colors} from '../../src/constants/colors'
 import Swiper from 'react-native-swiper';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const menuItems = [
   { id: '1', title: 'Thông báo', icon: <Ionicons name="notifications-outline" size={25} color="white" />, screen: 'Notifications' },
@@ -21,6 +23,7 @@ const menuItems = [
   { id: '6', title: 'Quản lý điểm', icon: <Ionicons name="bookmarks-outline" size={25} color="white" />, screen: 'ManageScores' },
 ];
 const HomeScreen = () => {
+  const navigation = useNavigation();
   return (
     <Container isScroll={true}>
 {/* Header */}
@@ -67,6 +70,7 @@ const HomeScreen = () => {
     columnWrapperStyle={{ justifyContent: 'space-between' }}
     renderItem={({ item }) => (
       <TouchableOpacity
+      onPress={() => navigation.navigate('NotificationScreen')}
         style={{
           alignItems: 'center',
           marginVertical: 10,
