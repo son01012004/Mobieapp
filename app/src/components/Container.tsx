@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, ScrollView, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants/colors';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// ✅ Định nghĩa kiểu dữ liệu cho danh sách màn hình
 export type RootStackParamList = {
   HomeScreenTab: undefined;
   ScheduleScreenTab: undefined;
@@ -19,13 +18,31 @@ type Props = {
   children: React.ReactNode;
   title?: string;
   isScroll?: boolean;
+  useFlatList?: boolean; // Thêm prop để hỗ trợ FlatList
 };
 
 const Container = (props: Props) => {
-  const { children, title, isScroll } = props;
+  const { children, title, isScroll, useFlatList } = props;
 
-  // ✅ Thêm kiểu dữ liệu cho useNavigation()
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const renderContent = () => {
+    if (useFlatList) {
+      return (
+        <FlatList
+          data={[]}
+          renderItem={() => null}
+          keyExtractor={(item, index) => index.toString()}
+          ListHeaderComponent={() => <>{children}</>}
+          contentContainerStyle={{ paddingBottom: 70 }}
+        />
+      );
+    } else if (isScroll) {
+      return <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>{children}</ScrollView>;
+    } else {
+      return <View style={globalStyles.container}>{children}</View>;
+    }
+  };
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -61,11 +78,7 @@ const Container = (props: Props) => {
       </View>
 
       {/* Nội dung */}
-      {isScroll ? (
-        <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>{children}</ScrollView>
-      ) : (
-        <View style={globalStyles.container}>{children}</View>
-      )}
+      {renderContent()}
     </SafeAreaView>
   );
 };

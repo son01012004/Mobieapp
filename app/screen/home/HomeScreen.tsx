@@ -1,18 +1,14 @@
-
 import React from 'react';
-import { View, Text, Image, SafeAreaView, Dimensions, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { View, Text, Image, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import Container from '../../src/components/Container';
-import TextComponent from '../../src/components/TextComponet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
-import {colors} from '../../src/constants/colors'
+import { colors } from '../../src/constants/colors';
 import Swiper from 'react-native-swiper';
 import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
 
 const menuItems = [
   { id: '1', title: 'Thông báo', icon: <Ionicons name="notifications-outline" size={25} color="white" />, screen: 'Notifications' },
@@ -22,77 +18,79 @@ const menuItems = [
   { id: '5', title: 'Thống kê điểm danh', icon: <EvilIcons name="calendar" size={25} color="white" />, screen: 'AttendanceStats' },
   { id: '6', title: 'Quản lý điểm', icon: <Ionicons name="bookmarks-outline" size={25} color="white" />, screen: 'ManageScores' },
 ];
+
 const HomeScreen = () => {
-  return (
-    <Container isScroll={true}>
-{/* Header */}
-<View
-  style={{
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.Pastel_Purple,
-    padding: 12,
-    width: '100%',
-    position: 'absolute',
-    top: 0,
-  }}
->
-  <Image
-    source={require("../../../assets/images/user1.png")}
-    style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12 }}
-  />
-  <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
-    Hello, Admin
-  </Text>
-</View>
-
-
-{/* Menu chính */}
-<View
-  style={{
-    backgroundColor: '#B3E5FC',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 80,
-    width: '95%',
-    alignSelf: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  }}
->
-  <FlatList
-    data={menuItems}
-    keyExtractor={(item) => item.id}
-    numColumns={3}
-    columnWrapperStyle={{ justifyContent: 'space-between' }}
-    renderItem={({ item }) => (
-      <TouchableOpacity
+  const renderHeader = () => (
+    <>
+      {/* Header */}
+      <View
         style={{
+          flexDirection: 'row',
           alignItems: 'center',
-          marginVertical: 10,
-          width: '30%',
-          backgroundColor: '#1976D2',
-          padding: 10,
-          borderRadius: 6,
-          elevation: 3,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3,
+          backgroundColor: colors.Pastel_Purple,
+          padding: 12,
+          width: '100%',
+          position: 'absolute',
+          top: 0,
         }}
       >
-        {item.icon}
-        <Text style={{ textAlign: 'center', marginTop: 3, color: 'white', fontWeight: 'bold', fontSize: 10 }}>
-          {item.title}
+        <Image
+          source={require("../../../assets/images/user1.png")}
+          style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12 }}
+        />
+        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
+          Hello, Admin
         </Text>
-      </TouchableOpacity>
-    )}
-  />
-</View>
-<View style={styles.sliderContainer}>
+      </View>
+
+      {/* Menu chính */}
+      <View
+        style={{
+          backgroundColor: '#B3E5FC',
+          padding: 10,
+          borderRadius: 10,
+          marginTop: 80,
+          width: '95%',
+          alignSelf: 'center',
+          elevation: 5,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 3 },
+          shadowOpacity: 0.3,
+          shadowRadius: 4,
+        }}
+      >
+        <FlatList
+          data={menuItems}
+          keyExtractor={(item) => item.id}
+          numColumns={3}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                marginVertical: 10,
+                width: '30%',
+                backgroundColor: '#1976D2',
+                padding: 10,
+                borderRadius: 6,
+                elevation: 3,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 3,
+              }}
+            >
+              {item.icon}
+              <Text style={{ textAlign: 'center', marginTop: 3, color: 'white', fontWeight: 'bold', fontSize: 10 }}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+
+      {/* Slider */}
+      <View style={styles.sliderContainer}>
         <Swiper
           autoplay
           showsPagination
@@ -117,10 +115,19 @@ const HomeScreen = () => {
               style={styles.slideImage}
             />
           </View>
-          {/* Thêm các slide khác nếu cần */}
         </Swiper>
       </View>
-      
+    </>
+  );
+
+  return (
+    <Container isScroll={false}>
+      <FlatList
+        data={[]}
+        renderItem={() => null}
+        ListHeaderComponent={renderHeader}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </Container>
   );
 };
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
   activeDotStyle: {
-    backgroundColor: colors.Pastel_Purple, // Hoặc sử dụng màu bạn muốn
+    backgroundColor: colors.Pastel_Purple,
     width: 8,
     height: 8,
     borderRadius: 4,

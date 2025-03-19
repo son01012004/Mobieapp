@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo';
+import { ClerkProvider } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 
 const createTokenCache = () => {
@@ -29,7 +29,6 @@ const createTokenCache = () => {
 export default function RootLayout() {
   const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-  // Khởi tạo tokenCache từ hàm createTokenCache()
   const tokenCache = createTokenCache();
 
   useFonts({
@@ -43,12 +42,10 @@ export default function RootLayout() {
       tokenCache={tokenCache}
       publishableKey={publishableKey}
     >
-      <Stack options={{ headerShown: false }}>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="Login/sign-in"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="main" options={{ headerShown: false }} />
       </Stack>
     </ClerkProvider>
   );
