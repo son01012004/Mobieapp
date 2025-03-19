@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, ScrollView, SafeAreaView, Platform, StatusBar, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
-import { Row } from '@bsdaoquang/rncomponent';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants/colors';
+import { useNavigation, DrawerActions } from '@react-navigation/native'; // Thêm DrawerActions
 
 type Props = {
   children: React.ReactNode;
@@ -13,25 +13,24 @@ type Props = {
 
 const Container = (props: Props) => {
   const { children, title, isScroll } = props;
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={globalStyles.container}>
       {/* Header */}
       <View style={{
-        backgroundColor: colors.Azure_Radiance, // Màu xanh dương
-      
+        backgroundColor: colors.Azure_Radiance,
         paddingHorizontal: 15,
         paddingBottom: 10,
-        height:80,
+        height: 80,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
         {/* Logo */}
         <Image 
-          source={require('../../../assets/images/logo.png')} // Đổi đường dẫn logo theo đúng vị trí của bạn
-          style={{ marginLeft: -40 ,width: 120, height: 100, resizeMode: 'contain' ,
-             }}
+          source={require('../../../assets/images/logo.png')}
+          style={{ marginLeft: -40, width: 120, height: 100, resizeMode: 'contain' }}
         />
 
         {/* Icon bên phải */}
@@ -39,7 +38,7 @@ const Container = (props: Props) => {
           <TouchableOpacity>
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <Ionicons name="menu" size={24} color="white" />
           </TouchableOpacity>
         </View>
