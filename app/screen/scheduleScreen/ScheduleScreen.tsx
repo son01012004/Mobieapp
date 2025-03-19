@@ -1,7 +1,6 @@
 import { Container, CardComponent } from '@/app/src/components';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import WeeklySchedule from './WeeklySchedule';
 import { colors, ColorType } from '@/app/src/constants/colors';
 
@@ -49,13 +48,13 @@ const ScheduleScreen = () => {
   const getBackgroundColor = (type: 'study' | 'exam' | 'practice'): ColorType => {
     switch (type) {
       case 'study':
-        return 'Light_Sky_Blue'; // Return the color name, not the hex value
+        return 'Light_Sky_Blue';
       case 'exam':
         return 'Pastel_Gold';
       case 'practice':
         return 'Pastel_Purple';
       default:
-        return 'Light_Sky_Blue'; // Fallback with defined color name
+        return 'Light_Sky_Blue';
     }
   };
 
@@ -67,16 +66,28 @@ const ScheduleScreen = () => {
 
         {/* Chế độ chọn lịch */}
         <View style={styles.radioContainer}>
-          <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
-            <View style={styles.radioItem}>
-              <RadioButton value="day" color="black" />
-              <Text style={styles.radioText}>Lịch học theo ngày</Text>
-            </View>
-            <View style={styles.radioItem}>
-              <RadioButton value="week" color="black" />
-              <Text style={styles.radioText}>Lịch học theo tuần</Text>
-            </View>
-          </RadioButton.Group>
+          <View style={styles.radioItem}>
+            <TouchableOpacity
+              style={styles.radioButton}
+              onPress={() => setChecked('day')}
+            >
+              <View style={styles.radioOuterCircle}>
+                {checked === 'day' && <View style={styles.radioInnerCircle} />}
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.radioText}>Lịch học theo ngày</Text>
+          </View>
+          <View style={styles.radioItem}>
+            <TouchableOpacity
+              style={styles.radioButton}
+              onPress={() => setChecked('week')}
+            >
+              <View style={styles.radioOuterCircle}>
+                {checked === 'week' && <View style={styles.radioInnerCircle} />}
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.radioText}>Lịch học theo tuần</Text>
+          </View>
         </View>
 
         {/* Render daily or weekly schedule based on selected option */}
@@ -144,10 +155,30 @@ const styles = StyleSheet.create({
   radioItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 5,
+  },
+  radioButton: {
+    padding: 5,
+  },
+  radioOuterCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  radioInnerCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'black',
   },
   radioText: {
     fontSize: 14,
     color: 'black',
+    marginLeft: 10,
   },
   legendContainer: {
     flexDirection: 'row',

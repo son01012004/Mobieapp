@@ -15,7 +15,7 @@ interface Lesson {
   teacher: string;
   room: string;
   color: string;
-  type: 'study' | 'exam' | 'practice'; // Added 'practice' type
+  type: 'study' | 'exam' | 'practice';
 }
 
 interface DaySchedule {
@@ -34,7 +34,7 @@ const scheduleData: DaySchedule[] = [
   {
     day: "Thứ 3",
     lessons: [
-      { time: "Tiết 1 ➝ 5", subject: "Kỹ thuật lập trình", teacher: "Nguyễn Văn Nam", room: "C103", color: "#DAB6FC", type: "practice" } // Changed to 'practice'
+      { time: "Tiết 1 ➝ 5", subject: "Kỹ thuật lập trình", teacher: "Nguyễn Văn Nam", room: "C103", color: "#DAB6FC", type: "practice" }
     ]
   },
   {
@@ -55,7 +55,7 @@ const scheduleData: DaySchedule[] = [
 
 const WeeklySchedule: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [viewMode, setViewMode] = useState<'all' | 'study' | 'exam' | 'practice'>('all'); // Added 'practice' to viewMode
+  const [viewMode, setViewMode] = useState<'all' | 'study' | 'exam' | 'practice'>('all');
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   const handlePreviousWeek = () => {
@@ -107,7 +107,6 @@ const WeeklySchedule: React.FC = () => {
 
   const screenWidth = Dimensions.get('window').width;
 
-  // Function to determine background color based on lesson type
   const getBackgroundColor = (type: 'study' | 'exam' | 'practice'): ColorType => {
     switch (type) {
       case 'study':
@@ -117,7 +116,7 @@ const WeeklySchedule: React.FC = () => {
       case 'practice':
         return 'Pastel_Purple';
       default:
-        return 'Light_Sky_Blue'; // Fallback
+        return 'Light_Sky_Blue';
     }
   };
 
@@ -156,14 +155,14 @@ const WeeklySchedule: React.FC = () => {
             <Text style={styles.toggleText}>Lịch thực hành</Text>
           </TouchableOpacity>
         </View>
+      </View>
 
+      {/* Combined row for date and action buttons */}
+      <View style={styles.actionRowContainer}>
         <TouchableOpacity style={styles.dateButton} onPress={handleDatePress}>
           <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
           <Icon name="calendar" size={16} color="#4A90E2" style={styles.dateIcon} />
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.actionRowContainer}>
         <View style={styles.actionContainer}>
           <TouchableOpacity style={styles.actionButton} onPress={handleCurrent}>
             <Icon name="clock-o" size={16} color="#4A90E2" />
@@ -255,7 +254,6 @@ const WeeklySchedule: React.FC = () => {
           return null;
         })}
 
-        {/* Chú thích */}
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
             <View style={[styles.legendColor, { backgroundColor: colors.Light_Sky_Blue }]} />
@@ -292,13 +290,14 @@ const styles = StyleSheet.create({
   },
   topRowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 10,
   },
   actionRowContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   toggleContainer: {
