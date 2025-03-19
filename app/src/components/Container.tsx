@@ -13,7 +13,6 @@ export type RootStackParamList = {
   QrScreenTab: undefined;
   TranscriptScreenTab: undefined;
   ProfileScreenTab: undefined;
-  NotificationScreen:undefined;
 };
 
 type Props = {
@@ -52,10 +51,10 @@ const Container = (props: Props) => {
 
         {/* Icon bên phải */}
         <View style={{ flexDirection: 'row', gap: 15 }}>
-          <TouchableOpacity onPress={() => navigation.navigate('NotificationScreen')}>
+          <TouchableOpacity>
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer)}>
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <Ionicons name="menu" size={24} color="white" />
           </TouchableOpacity>
         </View>

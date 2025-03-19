@@ -4,6 +4,10 @@ import { Label } from '@bsdaoquang/rncomponent';
 import { sizes } from '../constants/sizes';
 import { colors, ColorType } from '../constants/colors';
 
+
+//file nay la file component cua ban co the su dung
+//  cai nay voi nhung duw lieuj dang bnag co the xem file TransciptScreen de xem cach dung
+
 // Define the shape of each table cell data
 interface TableCellData {
   key: string; // Unique key to access the data

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // If using Expo, ensure `expo install @expo/vector-icons` is run
+import { Container } from '@/app/src/components';
 
 const FrameworkProgramScreen = () => {
   const navigation = useNavigation();
@@ -52,44 +53,46 @@ const FrameworkProgramScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header with Back Button and Title */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#4A90E2" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Chương trình khung</Text>
-        {/* Empty View to balance the layout */}
-        <View style={{ width: 24 }} />
-      </View>
+    <Container isScroll={true}>
+      <View style={styles.container}>
+        {/* Header with Back Button and Title */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="#4A90E2" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Chương trình khung</Text>
+          {/* Empty View to balance the layout */}
+          <View style={{ width: 24 }} />
+        </View>
 
-      <ScrollView style={styles.content}>
-        {frameworkData.semesters.map((semester, index) => (
-          <View key={index} style={styles.semesterContainer}>
-            <View style={styles.semesterHeader}>
-              <Text style={styles.semesterText}>{semester.semester}</Text>
-              <Text style={styles.creditsText}>Số tín chỉ: {semester.totalCredits}</Text>
-            </View>
-
-            <View style={styles.subjectsHeader}>
-              <Text style={styles.headerCell}>Tên môn học</Text>
-              <Text style={styles.headerCell}>Số TC</Text>
-              <Text style={styles.headerCell}>Số tiết LT</Text>
-              <Text style={styles.headerCell}>Số tiết TH</Text>
-            </View>
-
-            {semester.subjects.map((subject, subjectIndex) => (
-              <View key={subjectIndex} style={[styles.subjectCard, { backgroundColor: subject.color }]}>
-                <Text style={styles.subjectName}>{subject.name}</Text>
-                <Text style={styles.subjectDetail}>{subject.credits}</Text>
-                <Text style={styles.subjectDetail}>{subject.theoryHours}</Text>
-                <Text style={styles.subjectDetail}>{subject.practicalHours}</Text>
+        <ScrollView style={styles.content}>
+          {frameworkData.semesters.map((semester, index) => (
+            <View key={index} style={styles.semesterContainer}>
+              <View style={styles.semesterHeader}>
+                <Text style={styles.semesterText}>{semester.semester}</Text>
+                <Text style={styles.creditsText}>Số tín chỉ: {semester.totalCredits}</Text>
               </View>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+
+              <View style={styles.subjectsHeader}>
+                <Text style={styles.headerCell}>Tên môn học</Text>
+                <Text style={styles.headerCell}>Số TC</Text>
+                <Text style={styles.headerCell}>Số tiết LT</Text>
+                <Text style={styles.headerCell}>Số tiết TH</Text>
+              </View>
+
+              {semester.subjects.map((subject, subjectIndex) => (
+                <View key={subjectIndex} style={[styles.subjectCard, { backgroundColor: subject.color }]}>
+                  <Text style={styles.subjectName}>{subject.name}</Text>
+                  <Text style={styles.subjectDetail}>{subject.credits}</Text>
+                  <Text style={styles.subjectDetail}>{subject.theoryHours}</Text>
+                  <Text style={styles.subjectDetail}>{subject.practicalHours}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </Container>
   );
 };
 
