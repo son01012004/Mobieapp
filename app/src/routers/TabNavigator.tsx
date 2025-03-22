@@ -6,7 +6,7 @@ import ScheduleScreen from '@/app/screen/scheduleScreen/ScheduleScreen';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProfileNavigator from './ProfileNavigator';
-
+import MenuItemsNavigator from './MenuItemsNavigator'
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -92,7 +92,6 @@ const TabNavigator = () => {
       />
       <Tab.Screen name="TranscriptScreenTab" component={TransciptScreen} />
       <Tab.Screen name="ProfileScreenTab" component={ProfileNavigator} />
-
 
     </Tab.Navigator>
   );

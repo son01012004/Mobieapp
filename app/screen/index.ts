@@ -6,6 +6,10 @@ import scheduleScreen from './scheduleScreen/ScheduleScreen';
 import NotificationScreen from './Notification/NotificationScreen'
 import FrameworkProgramScreen from './profiles/FrameworkProgramScreen';
 import RegisterForCoursesScreen from './register_for_courses/RegisterForCoursesScreeen';
+import PaymentScreen from './Payment/PaymentScreen';
+import RollCall from './RollCall/RollCallScreen';
+import TrainingPointsScreen from './TrainingPoints/TrainingPointsScreen';
+import PointManagementScreen from './PointManagement/PointManagementScreen';
 export {
   HomeScreen,
   ProfileScreen,
@@ -15,4 +19,8 @@ export {
   NotificationScreen,
   FrameworkProgramScreen,
   RegisterForCoursesScreen,
+  PaymentScreen,
+  RollCall,
+  TrainingPointsScreen,
+  PointManagementScreen,
 }

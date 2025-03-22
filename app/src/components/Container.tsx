@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants/colors';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NotificationScreen } from '@/app/screen';
 
 export type RootStackParamList = {
   HomeScreenTab: undefined;
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   QrScreenTab: undefined;
   TranscriptScreenTab: undefined;
   ProfileScreenTab: undefined;
+  NotificationScreen: undefined;
 };
 
 type Props = {
@@ -68,7 +70,7 @@ const Container = (props: Props) => {
 
         {/* Icon bên phải */}
         <View style={{ flexDirection: 'row', gap: 15 }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("NotificationScreen")}>
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
