@@ -20,11 +20,11 @@ type RootStackParamList = {
 
 const menuItems: { id: string; title: string; icon: string; screen?: keyof RootStackParamList }[] = [
  
-  { id: '1', title: 'Đăng ký học phần', icon: 'book' }, // Chưa có màn hình
-  { id: '2', title: 'Thanh toán', icon: 'wallet', screen: 'PaymentNavigator' },
-  { id: '3', title: 'Điểm rèn luyện', icon: 'award', screen: 'TrainingPointsNavigator' },
-  { id: '4', title: 'Thống kê điểm danh', icon: 'calendar' }, // Chưa có màn hình
-  { id: '5', title: 'Quản lý điểm', icon: 'bookmarks-outline', screen: 'PointManagementNavigator' },
+ 
+  { id: '1', title: 'Thanh toán', icon: 'wallet', screen: 'PaymentNavigator' },
+  { id: '2', title: 'Điểm rèn luyện', icon: 'award', screen: 'TrainingPointsNavigator' },
+  { id: '3', title: 'Thống kê điểm danh', icon: 'calendar' }, // Chưa có màn hình
+  
 ];
 
 const MenuItemsNavigator = () => {

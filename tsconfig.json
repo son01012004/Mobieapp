@@ -17,5 +17,5 @@
     "app/_layout.jsx",
     "app/index.jsx"
   ],
-  "extends": "expo/tsconfig.base"
+  "extends": "@tsconfig/react-native/tsconfig.json"
 }
