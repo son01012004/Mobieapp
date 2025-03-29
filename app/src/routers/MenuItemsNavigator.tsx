@@ -23,7 +23,7 @@ const menuItems: { id: string; title: string; icon: string; screen?: keyof RootS
  
   { id: '1', title: 'Thanh toán', icon: 'wallet', screen: 'PaymentNavigator' },
   { id: '2', title: 'Điểm rèn luyện', icon: 'award', screen: 'TrainingPointsNavigator' },
-  { id: '3', title: 'Thống kê điểm danh', icon: 'calendar' }, // Chưa có màn hình
+  { id: '3', title: 'Thống kê điểm danh', icon: 'calendar',screen: 'PointManagementNavigator' }, // Chưa có màn hình
   
 ];
 

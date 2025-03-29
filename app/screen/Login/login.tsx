@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, ImageBackground, Image, TouchableOpacity, TextInput, Alert } from "react-native";
+import { View, Text, ImageBackground, Image, TouchableOpacity, TextInput, Alert, Dimensions } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as WebBrowser from "expo-web-browser";
@@ -33,6 +33,8 @@ export default function Login({ setIsLoging }: LoginProps) {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { width, height } = Dimensions.get("window");
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,9 +76,9 @@ export default function Login({ setIsLoging }: LoginProps) {
     <View style={{ flex: 1 }}>
       <ImageBackground
         source={require("../../../assets/images/Back1.png")}
-        style={{ width: '100%', height: 700, justifyContent: "center", alignItems: "center" }}
+        style={{ width: '100%', height: height, justifyContent: "center", alignItems: "center" }}
       >
-        <Text style={{ fontSize: 28, fontWeight: "bold", color: "#0047AB", marginBottom: 20, position: "absolute", top: 80 }}>
+        <Text style={{ fontSize: 28, fontWeight: "bold", color: "#0047AB", marginBottom: 20, position: "absolute", top: height * 0.1 }}>
           Đăng nhập
         </Text>
         
