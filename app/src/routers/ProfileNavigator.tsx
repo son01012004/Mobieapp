@@ -1,13 +1,20 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FrameworkProgramScreen, ProfileScreen } from '@/app/screen'; // Adjust path if needed
 
 const Stack = createNativeStackNavigator();
 
-const ProfileNavigator = () => {
+interface ProfileNavigatorProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ProfileNavigator: React.FC<ProfileNavigatorProps> = ({ setIsLoggedIn }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen
+        name="ProfileScreen"
+        children={(props: NativeStackScreenProps<any>) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+      />
       <Stack.Screen name="FrameworkProgramScreen" component={FrameworkProgramScreen} />
     </Stack.Navigator>
   );

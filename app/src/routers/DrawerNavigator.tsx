@@ -1,29 +1,31 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import {createDrawerNavigator} from '@react-navigation/drawer'
-import HomeNavigator from './HomeNavigator'
-import DrawerCustom from '../components/DrawerCustom'
-import TabNavigator from './TabNavigator'
-import RegisterForCoursesNavigator from './RegisterForCoursesNavigator'
-const DrawerNavigator = () => {
-    const Drawer = createDrawerNavigator()
-  return (
-    <Drawer.Navigator screenOptions={{
-        headerShown: false,
-        drawerPosition: 'left',
-        
-    }} drawerContent={props => <DrawerCustom {...props}/>}> 
-        <Drawer.Screen name = 'DrawerMenu' component={TabNavigator}>
+import React from 'react';
+import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
+import TabNavigator from './TabNavigator';
+import DrawerCustom from '../components/DrawerCustom';
+import RegisterForCoursesNavigator from './RegisterForCoursesNavigator';
+import { Dispatch, SetStateAction } from 'react';
 
-        </Drawer.Screen>
-        <Drawer.Screen name = 'RegisterForCoursesNavigator' component={RegisterForCoursesNavigator}>
+const Drawer = createDrawerNavigator();
 
-</Drawer.Screen>
-        
-        
-
-    </Drawer.Navigator>
-  )
+interface DrawerNavigatorProps {
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
-export default DrawerNavigator
+const DrawerNavigator: React.FC<DrawerNavigatorProps> = ({ setIsLoggedIn }) => {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerPosition: 'left',
+      }}
+      drawerContent={(props: DrawerContentComponentProps) => <DrawerCustom {...props} />}
+    >
+      <Drawer.Screen name="DrawerMenu">
+        {props => <TabNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
+      </Drawer.Screen>
+      <Drawer.Screen name="RegisterForCoursesNavigator" component={RegisterForCoursesNavigator} />
+    </Drawer.Navigator>
+  );
+};
+
+export default DrawerNavigator;

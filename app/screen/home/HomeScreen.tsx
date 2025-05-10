@@ -1,43 +1,87 @@
-import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { View, Text, Image, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Container from '../../src/components/Container';
 import Swiper from 'react-native-swiper';
 import { colors } from '../../src/constants/colors';
 import MenuItemsNavigator from '../../src/routers/MenuItemsNavigator';
+import { getProfile, logout } from '../../src/api/authService';
 
-const HomeScreen = () => {
+// Định nghĩa kiểu cho các màn hình
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  ProfileScreen: undefined;
+  Register: undefined;
+};
+
+// Định nghĩa kiểu cho navigation
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
+// Định nghĩa kiểu cho props của HomeScreen
+interface HomeScreenProps {
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ setIsLoggedIn }) => {
+  const navigation = useNavigation<NavigationProp>();
+  const [userName, setUserName] = useState('User');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfile();
+        setUserName(profile.username);
+      } catch (error: any) {
+        Alert.alert('Error', error.message || 'Failed to load profile');
+        await logout();
+        setIsLoggedIn(false);
+        navigation.navigate('Login');
+      }
+    };
+    fetchProfile();
+  }, [navigation, setIsLoggedIn]);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsLoggedIn(false);
+    navigation.navigate('Login');
+  };
+
+  const handleViewProfile = () => {
+    navigation.navigate('ProfileScreen');
+  };
+
   const renderHeader = () => (
-    <>
-      <View style={styles.header}>
-        <Image source={require("../../../assets/images/user1.png")} style={styles.profileImage} />
-        <Text style={styles.headerText}>Hello, Admin</Text>
-      </View>
-
-       {/* MenuItemsNavigator */}
-      <View style={{ marginTop: 80 }}>
-        <MenuItemsNavigator />
-      </View>
-
-      {/* Slider */}
-      <View style={styles.sliderContainer}>
-        <Swiper autoplay showsPagination dotStyle={styles.dotStyle} activeDotStyle={styles.activeDotStyle}>
-          <View style={styles.slide}>
-            <Image source={require("../../../assets/images/Sliders/slide1.png")} style={styles.slideImage} />
-          </View>
-          <View style={styles.slide}>
-            <Image source={require("../../../assets/images/Sliders/slide2.png")} style={styles.slideImage} />
-          </View>
-          <View style={styles.slide}>
-            <Image source={require("../../../assets/images/Sliders/slide3.png")} style={styles.slideImage} />
-          </View>
-        </Swiper>
-      </View>
-    </>
+    <View style={styles.header}>
+      <Image source={require('../../../assets/images/user1.png')} style={styles.profileImage} />
+      <Text style={styles.headerText}>Hello, {userName}</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Logout</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
-    <Container isScroll={false}>
-      <FlatList data={[]} renderItem={() => null} ListHeaderComponent={renderHeader} keyExtractor={(item, index) => index.toString()} />
+    <Container isScroll={false} useFlatList={false}>
+      {renderHeader()}
+      <View style={{ marginTop: 20 }}>
+        <MenuItemsNavigator />
+      </View>
+      <View style={styles.sliderContainer}>
+        <Swiper autoplay showsPagination dotStyle={styles.dotStyle} activeDotStyle={styles.activeDotStyle}>
+          <View style={styles.slide}>
+            <Image source={require('../../../assets/images/Sliders/slide1.png')} style={styles.slideImage} />
+          </View>
+          <View style={styles.slide}>
+            <Image source={require('../../../assets/images/Sliders/slide2.png')} style={styles.slideImage} />
+          </View>
+          <View style={styles.slide}>
+            <Image source={require('../../../assets/images/Sliders/slide3.png')} style={styles.slideImage} />
+          </View>
+        </Swiper>
+      </View>
     </Container>
   );
 };
@@ -49,8 +93,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Pastel_Purple,
     padding: 12,
     width: '100%',
-    position: 'absolute',
-    top: 0,
   },
   profileImage: {
     width: 40,
@@ -61,6 +103,14 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     fontSize: 18,
+    fontWeight: 'bold',
+  },
+  logoutButton: {
+    marginLeft: 10,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 16,
     fontWeight: 'bold',
   },
   sliderContainer: {

@@ -1,35 +1,33 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Sign from '../../screen/Login/Sign-in';
-import Login from '../../screen/Login/login';
-import Register from '../../screen/Login/register';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from '../../screen/Login/login';
 
-// Define the param list for AuthNavigator
-export type AuthStackParamList = {
-  Sign: undefined;
-  Login: undefined;
-  Register: undefined;
-};
+console.log('Debug: AuthNavigator.tsx - LoginScreen imported:', LoginScreen);
 
-// Define the navigation prop type
-type AuthNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
+const Stack = createNativeStackNavigator();
 
-// Define the props interface for AuthNavigator
 interface AuthNavigatorProps {
-  setIsLoging: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Stack = createNativeStackNavigator<AuthStackParamList>();
+const AuthNavigator: React.FC<AuthNavigatorProps> = ({ setIsLoggedIn }) => {
+  console.log('Debug: AuthNavigator.tsx - Inside AuthNavigator component, setIsLoggedIn:', setIsLoggedIn);
+  console.log('Debug: AuthNavigator.tsx - screenOptions:', { headerShown: false });
 
-const AuthNavigator: React.FC<AuthNavigatorProps> = ({ setIsLoging }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Sign" component={Sign} />
-      <Stack.Screen name="Login">
-        {props => <Login {...props} setIsLoging={setIsLoging} />}
+      <Stack.Screen
+        name="Login"
+        options={() => {
+          console.log('Debug: AuthNavigator.tsx - Stack.Screen options for Login');
+          return {};
+        }}
+      >
+        {props => {
+          console.log('Debug: AuthNavigator.tsx - Props passed to LoginScreen:', props);
+          return <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />;
+        }}
       </Stack.Screen>
-      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   );
 };

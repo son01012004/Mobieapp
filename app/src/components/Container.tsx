@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, ScrollView, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants/colors';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { NotificationScreen } from '@/app/screen';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
   HomeScreenTab: undefined;
@@ -20,15 +20,17 @@ type Props = {
   children: React.ReactNode;
   title?: string;
   isScroll?: boolean;
-  useFlatList?: boolean; // Thêm prop để hỗ trợ FlatList
+  useFlatList?: boolean;
 };
 
 const Container = (props: Props) => {
   const { children, title, isScroll, useFlatList } = props;
-
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const renderContent = () => {
+    const contentStyle = { paddingBottom: 70, paddingTop: insets.top + 80 }; // Thêm insets.top vào paddingTop
+
     if (useFlatList) {
       return (
         <FlatList
@@ -36,28 +38,38 @@ const Container = (props: Props) => {
           renderItem={() => null}
           keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={() => <>{children}</>}
-          contentContainerStyle={{ paddingBottom: 70 }}
+          contentContainerStyle={contentStyle}
         />
       );
     } else if (isScroll) {
-      return <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>{children}</ScrollView>;
+      return (
+        <ScrollView contentContainerStyle={contentStyle}>
+          {children}
+        </ScrollView>
+      );
     } else {
-      return <View style={globalStyles.container}>{children}</View>;
+      return <View style={[globalStyles.container, contentStyle]}>{children}</View>;
     }
   };
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { flex: 1 }]} edges={['bottom', 'left', 'right']}>
       {/* Header */}
       <View
         style={{
           backgroundColor: colors.Azure_Radiance,
           paddingHorizontal: 15,
           paddingBottom: 10,
-          height: 80,
+          paddingTop: insets.top, // Sử dụng insets.top để tránh bị che bởi thanh trạng thái
+          height: 80 + insets.top, // Điều chỉnh chiều cao để bao gồm insets.top
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
         }}
       >
         {/* Logo */}
@@ -70,10 +82,25 @@ const Container = (props: Props) => {
 
         {/* Icon bên phải */}
         <View style={{ flexDirection: 'row', gap: 15 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("NotificationScreen")}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('Navigating to NotificationScreen');
+              navigation.navigate('NotificationScreen');
+            }}
+          >
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('Opening Drawer');
+              try {
+                navigation.dispatch(DrawerActions.openDrawer());
+              } catch (error) {
+                console.log('Drawer error:', error);
+                navigation.navigate('HomeScreenTab');
+              }
+            }}
+          >
             <Ionicons name="menu" size={24} color="white" />
           </TouchableOpacity>
         </View>
