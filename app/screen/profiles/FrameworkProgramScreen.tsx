@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Container from '@/app/src/components/Container';
-import api from '../../src/api/api'; // Import api từ file cấu hình
+import api from '../../src/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Định nghĩa kiểu cho dữ liệu môn học
@@ -52,7 +52,6 @@ const FrameworkProgramScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Hàm tải dữ liệu chương trình khung
   const fetchFrameworkData = async () => {
     if (!studentId) {
       setError('Không tìm thấy thông tin sinh viên. Vui lòng kiểm tra lại.');
@@ -69,11 +68,9 @@ const FrameworkProgramScreen = () => {
         throw new Error('No token found');
       }
 
-      // Gọi API để lấy dữ liệu chương trình khung
       const response = await api.get(`/api/curriculum/student/${studentId}`);
       const data: CurriculumDetail[] = response.data;
 
-      // Nhóm dữ liệu theo học kỳ
       const groupedBySemester = data.reduce((acc: Semester[], detail: CurriculumDetail) => {
         const semesterName = detail.semesterName;
         const existingSemester = acc.find((s) => s.semester === semesterName);
@@ -83,7 +80,7 @@ const FrameworkProgramScreen = () => {
           credits: `${detail.credits}(${detail.theoryPeriods},${detail.practicalPeriods},0)`,
           theoryHours: detail.theoryPeriods,
           practicalHours: detail.practicalPeriods,
-          color: subjectColors[acc.length % subjectColors.length],
+          color: '#F5F5F5', // Màu thống nhất cho tất cả các dòng
         };
 
         if (existingSemester) {
@@ -121,8 +118,6 @@ const FrameworkProgramScreen = () => {
   useEffect(() => {
     fetchFrameworkData();
   }, [studentId]);
-
-  const subjectColors = ['#D8BFD8', '#FFA07A', '#87CEEB', '#E6F0FA', '#FFDEAD'];
 
   if (loading) {
     return (
@@ -168,18 +163,26 @@ const FrameworkProgramScreen = () => {
               </View>
 
               <View style={styles.subjectsHeader}>
-                <Text style={styles.headerCell}>Tên môn học</Text>
-                <Text style={styles.headerCell}>Số TC</Text>
-                <Text style={styles.headerCell}>Số tiết LT</Text>
-                <Text style={styles.headerCell}>Số tiết TH</Text>
+                <Text style={[styles.headerCell, { width: '40%' }]}>Tên môn học</Text>
+                <Text style={[styles.headerCell, { width: '20%' }]}>Số TC</Text>
+                <Text style={[styles.headerCell, { width: '20%' }]}>Số tiết LT</Text>
+                <Text style={[styles.headerCell, { width: '20%' }]}>Số tiết TH</Text>
               </View>
 
               {semester.subjects.map((subject, subjectIndex) => (
                 <View key={subjectIndex} style={[styles.subjectCard, { backgroundColor: subject.color }]}>
-                  <Text style={styles.subjectName}>{subject.name}</Text>
-                  <Text style={styles.subjectDetail}>{subject.credits}</Text>
-                  <Text style={styles.subjectDetail}>{subject.theoryHours}</Text>
-                  <Text style={styles.subjectDetail}>{subject.practicalHours}</Text>
+                  <Text
+                    style={[styles.subjectName, { width: '40%' }]}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {subject.name}
+                  </Text>
+                  <Text style={[styles.subjectDetail, { width: '20%' }]}>
+                    {subject.credits.split('(')[0]}
+                  </Text>
+                  <Text style={[styles.subjectDetail, { width: '20%' }]}>{subject.theoryHours}</Text>
+                  <Text style={[styles.subjectDetail, { width: '20%' }]}>{subject.practicalHours}</Text>
                 </View>
               ))}
             </View>
@@ -203,6 +206,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
   title: {
     fontSize: 20,
@@ -213,6 +218,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   semesterContainer: {
     marginBottom: 20,
@@ -221,7 +227,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#87CEEB',
-    padding: 10,
+    padding: 12,
     borderRadius: 8,
     marginBottom: 10,
     elevation: 2,
@@ -243,24 +249,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#E6F0FA',
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 6,
     marginBottom: 10,
   },
   headerCell: {
     fontSize: 14,
     fontWeight: '600',
     color: '#4A90E2',
-    flex: 1,
     textAlign: 'center',
   },
   subjectCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
+    padding: 12,
+    borderRadius: 6,
+    marginBottom: 8,
     elevation: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -270,13 +275,11 @@ const styles = StyleSheet.create({
   subjectName: {
     fontSize: 14,
     color: '#000',
-    flex: 3,
     textAlign: 'left',
   },
   subjectDetail: {
     fontSize: 14,
     color: '#000',
-    flex: 1,
     textAlign: 'center',
   },
   loadingContainer: {

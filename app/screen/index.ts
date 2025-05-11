@@ -11,6 +11,8 @@ import RollCallScreen from './RollCall/RollCallScreen';
 import TrainingPointsScreen from './TrainingPoints/TrainingPointsScreen';
 import PointManagementScreen from './PointManagement/PointManagementScreen';
 import ProfileScreen from './profiles/ProfileScreen';
+import TranscriptScreen from './transcript/TransciptScreen';
+
 export {
   HomeScreen,
   ProfileScreen,
@@ -24,4 +26,5 @@ export {
   RollCallScreen,
   TrainingPointsScreen,
   PointManagementScreen,
-}
+  TranscriptScreen}
+  
