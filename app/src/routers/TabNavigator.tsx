@@ -1,12 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View } from 'react-native';
-import { HomeScreen, ProfileScreen, QrScreen, ScheduleScreen, TrainingPointsScreen } from '@/app/screen';
+import { HomeScreen, QrScreen, ScheduleScreen, TrainingPointsScreen } from '@/app/screen';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Dispatch, SetStateAction } from 'react';
-import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import ProfileNavigator from './ProfileNavigator';
 
 export type TabParamList = {
   HomeScreenTab: undefined;
@@ -108,7 +107,7 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({ setIsLoggedIn }) => {
       <Tab.Screen name="TranscriptScreenTab" component={TrainingPointsScreen} />
       <Tab.Screen
         name="ProfileScreenTab"
-        children={(props) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        children={(props) => <ProfileNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
       />
     </Tab.Navigator>
   );

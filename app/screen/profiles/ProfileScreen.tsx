@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
-import Container from '../../src/components/Container';
+import Container from '@/app/src/components/Container';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { getProfile } from '../../src/api/authService';
-import { useSchedule } from '../../src/context/ScheduleContext';
+import { getProfile, logout } from '@/app/src/api/authService';
+import { useSchedule } from '@/app/src/context/ScheduleContext';
 import { Dispatch, SetStateAction } from 'react';
 
 type RootStackParamList = {
-  ProfileScreenTab: undefined;
-  FrameworkProgramScreen: undefined;
+  ProfileScreen: undefined;
+  FrameworkProgramScreen: { studentId: string };
 };
 
-type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ProfileScreenTab'>;
+type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ProfileScreen'>;
 
 interface ProfileScreenProps {
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
@@ -28,8 +28,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ setIsLoggedIn }) => {
       try {
         const data = await getProfile();
         setProfileData(data);
-        if (data.studentId) {
+        if (data.studentId) { // Sử dụng studentId từ phản hồi của /auth/profile
           setStudentId(data.studentId.toString());
+        } else {
+          Alert.alert('Error', 'Không tìm thấy studentId trong thông tin hồ sơ.');
         }
       } catch (error: any) {
         Alert.alert('Error', error.message || 'Failed to load profile');
@@ -39,11 +41,20 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ setIsLoggedIn }) => {
   }, []);
 
   const handleViewFramework = () => {
-    navigation.navigate('FrameworkProgramScreen');
+    if (!profileData?.studentId) {
+      Alert.alert('Error', 'Không tìm thấy thông tin sinh viên.');
+      return;
+    }
+    navigation.navigate('FrameworkProgramScreen', { studentId: profileData.studentId.toString() });
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsLoggedIn(false);
+    } catch (error) {
+      Alert.alert('Error', 'Đăng xuất thất bại. Vui lòng thử lại.');
+    }
   };
 
   if (!profileData) {
@@ -140,7 +151,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ setIsLoggedIn }) => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleViewFramework} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.button} onPress={handleViewFramework}>
           <Text style={styles.buttonText}>Xem chương trình khung</Text>
         </TouchableOpacity>
 

@@ -30,11 +30,17 @@ export const logout = async (): Promise<void> => {
   await AsyncStorage.removeItem('token');
 };
 
-// Removed local declaration of UserProfile to resolve conflict with imported type
-
 export const getProfile = async (): Promise<UserProfile> => {
   try {
-    const response = await api.get<UserProfile>('/auth/profile');
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await api.get<UserProfile>('/auth/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Failed to fetch profile');

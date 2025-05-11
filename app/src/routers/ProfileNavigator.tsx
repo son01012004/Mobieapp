@@ -1,8 +1,13 @@
 import React from 'react';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FrameworkProgramScreen, ProfileScreen } from '@/app/screen'; // Adjust path if needed
+import { FrameworkProgramScreen, ProfileScreen } from '@/app/screen';
 
 const Stack = createNativeStackNavigator();
+
+type RootStackParamList = {
+  ProfileScreen: undefined;
+  FrameworkProgramScreen: { studentId: string };
+};
 
 interface ProfileNavigatorProps {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,9 +18,13 @@ const ProfileNavigator: React.FC<ProfileNavigatorProps> = ({ setIsLoggedIn }) =>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="ProfileScreen"
-        children={(props: NativeStackScreenProps<any>) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        // Use a wrapper component to inject setIsLoggedIn
+        children={(props) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
       />
-      <Stack.Screen name="FrameworkProgramScreen" component={FrameworkProgramScreen} />
+      <Stack.Screen
+        name="FrameworkProgramScreen"
+        component={FrameworkProgramScreen}
+      />
     </Stack.Navigator>
   );
 };

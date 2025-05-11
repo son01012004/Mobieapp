@@ -19,7 +19,7 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ setIsLoggedIn }) => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="MainScreen"
-        children={(props) => <DrawerNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
+        component={(props: any) => <DrawerNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
       />
       <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
       <Stack.Screen name="MenuItemsNavigator" component={MenuItemsNavigator} />

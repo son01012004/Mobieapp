@@ -5,7 +5,7 @@ import MainNavigator from './app/src/routers/MainNavigator';
 import AuthNavigator from './app/src/routers/AuthNavigator';
 import { getToken } from './app/src/utils/storage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ScheduleProvider } from './app/src/context/ScheduleContext'; // Đường dẫn tới ScheduleContext
+import { ScheduleProvider } from './app/src/context/ScheduleContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,20 +29,18 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <ScheduleProvider> {/* Bao bọc toàn cục bằng ScheduleProvider */}
+      <ScheduleProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isLoggedIn ? (
               <Stack.Screen
                 name="Main"
-                children={(props) => <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
-                options={{ headerShown: false }}
+                component={(props: any) => <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
               />
             ) : (
               <Stack.Screen
                 name="Auth"
-                children={(props) => <AuthNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
-                options={{ headerShown: false }}
+                component={(props: any) => <AuthNavigator {...props} setIsLoggedIn={setIsLoggedIn} />}
               />
             )}
           </Stack.Navigator>
